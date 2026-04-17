@@ -1,0 +1,29 @@
+# Genesys Tools Platform - Docker image
+#
+# Build context: repo root (one level up from execution/)
+# Build: docker compose up -d --build genesys-tools
+#
+# The entire repo is copied into /app so that execution scripts, directives,
+# templates, and tools_catalog.json are all available at runtime.
+# User data (SQLite DB) lives in a named Docker volume at /data.
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install Python deps first (layer cache - only rebuilds when requirements change)
+COPY execution/requirements_genesys_tools.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+# Copy the full repo
+COPY . .
+
+# Create the .tmp directory used for token caches and intermediate files
+RUN mkdir -p /app/.tmp
+
+# The /data directory is a Docker volume mount point - do not pre-create data here
+# Data volume is declared in docker-compose.yml
+
+EXPOSE 8080
+
+CMD ["python", "/app/execution/genesys_tools_web.py", "--host", "0.0.0.0", "--port", "8080"]

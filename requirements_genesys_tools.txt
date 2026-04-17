@@ -1,0 +1,28 @@
+# Genesys Tools Platform - Python dependencies
+# Install with: pip install -r requirements_genesys_tools.txt
+
+# Auth
+bcrypt>=4.0
+pyjwt>=2.8
+itsdangerous>=2.1
+
+# Web
+fastapi>=0.110
+uvicorn>=0.27
+python-multipart>=0.0.9
+jinja2==3.1.4
+
+# Anthropic
+anthropic>=0.40.0
+
+# Existing platform deps
+requests
+sendgrid
+google-auth
+google-api-python-client
+python-dotenv
+pyyaml
+
+# PCAP parsing (SIP trace tool)
+dpkt
+
